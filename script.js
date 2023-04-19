@@ -1,6 +1,7 @@
 const form = document.querySelector(".form");
 const list = document.querySelector(".todosList");
 const clear = document.querySelector(".clear");
+const input = document.querySelector(".input");
 
 const todos = [{ value: "Reading a book" }, { value: "Playing football" }];
 
@@ -32,11 +33,11 @@ const clearTodos = () => {
 form.addEventListener("submit", (event) => {
     event.preventDefault();
     console.log(event);
-    const inputValue = event.target["todo"].value;
+    let inputValue = event.target["todo"].value;
     const newTodo = { value: inputValue, id: Date.now() + "#" };
     todos.unshift(newTodo);
     render();
-    inputValue = "";
+    input.value = "";
 });
 
 clear.addEventListener("click", (event) => {
