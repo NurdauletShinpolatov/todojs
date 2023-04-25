@@ -5,10 +5,16 @@ const inputAdd = document.querySelector(".input");
 const filterTodos = document.querySelector(".filterTodos");
 
 
-let todos = [
-    { value: "Reading a book", id: "a213423334", isDone: false },
-    { value: "Playing football", id: "a234234", isDone: false }
+
+let todos = JSON.parse(localStorage.getItem("todos")) || [
+    { value: "Welcome to Taks management app", id: "a213423334", isDone: false },
+    { value: "Your data is stored on local storage", id: "a234234", isDone: false },
+    { value: "You can add tasks", id: "a2342d34", isDone: false },
+    { value: "You can delete them", id: "a2342234", isDone: false },
+    { value: "You can edit any of them", id: "a2g34234", isDone: false },
+    { value: "You can mark task as done", id: "a23h4234", isDone: false },
 ];
+
 let selectedFilter = "all";
 let selectedTask = "";
 
@@ -24,12 +30,13 @@ const filterByStatus = (todos, selectedFilter) => {
 }
 
 const render = () => {
+    localStorage.setItem('todos', JSON.stringify(todos));
     list.innerHTML = "";
     filterByStatus(todos, selectedFilter).forEach(element => {
         list.innerHTML += `
-        <li class="todo">
+        <li class="todo ${element.isDone ? "completedTask" : ""}">
             <input type="checkbox" ${element.isDone ? "checked" : ""} onclick="markAsDone('${element.id}')" />
-            <input id="${element.id}" value="${element.value}" class="todo_input ${selectedTask != element.id ? "notEditable" : ""}" type="text" />
+            <input id="${element.id}" value="${element.value}" class="todo_input ${selectedTask != element.id ? "notEditable" : ""} ${element.isDone ? "completedTask" : ""}" type="text" />
             <div class="save ${selectedTask != element.id ? 'none' : ''}">
                 <i onclick="saveEdit()" class='bx bx-sm bxs-save'></i>
             </div>
@@ -50,11 +57,13 @@ render();
 
 const deleteTodo = (id) => {
     todos = todos.filter((item) => item.id !== id);
+    selectedTask = "";
     render();
 }
 
 const clearTodos = () => {
     todos = [];
+    selectedTask = "";
     render();
 }
 
@@ -62,6 +71,11 @@ const enableEdit = (id) => {
     selectedTask = id;
     render();
     const elem = document.querySelector(`${"#"+id}`);
+    elem.addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) {
+            saveEdit();
+        }
+    });
     elem.setSelectionRange(elem.value.length, elem.value.length);
     elem.focus();
 }
@@ -105,7 +119,7 @@ form.addEventListener("submit", (event) => {
     }
 });
 
-clear.addEventListener("click", (event) => {
+clear.addEventListener("click", () => {
     clearTodos();
 })
 
