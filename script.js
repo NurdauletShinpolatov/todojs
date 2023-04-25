@@ -62,7 +62,7 @@ const enableEdit = (id) => {
     selectedTask = id;
     render();
     const elem = document.querySelector(`${"#"+id}`);
-    // elem.setSelectionRange(elem.value.length, elem.value.length);
+    elem.setSelectionRange(elem.value.length, elem.value.length);
     elem.focus();
 }
 
