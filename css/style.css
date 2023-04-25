@@ -1,3 +1,6 @@
+* {
+  font-family: 'Quicksand';
+}
 
 body div {
   margin: 0px 0px 0px 0px;
@@ -5,7 +8,7 @@ body div {
 
 .wrapper {
   height: 100vh;
-  background: #f5f5f5;
+  background: #cecece;
 }
 
 .container {
@@ -17,17 +20,16 @@ body div {
 
 .title {
   text-align: center;
-  font-family: "Inter";
   font-weight: 700;
   font-size: 56px;
   line-height: 68px;
-  color: #000000;
+  color: #353535;
   margin-bottom: 34px;
 }
 
 .block {
   display: grid;
-  background: #fbfbfb;
+  background: #ffffff;
   border-radius: 12px;
   padding: 32px;
 }
@@ -36,16 +38,26 @@ body div {
   display: flex;
   justify-content: space-between;
   margin-bottom: 11px;
+  min-width: 392px;
+}
+
+.filter {
+  padding: 10px;
+}
+
+.filterTodos{
+  border: 1px solid #e6e6e6;
+  padding: 5px;
+  border-radius: 6px;
 }
 
 .input {
   padding: 0 16px;
   background: #ffffff;
-  border: 1px solid #e5e9eb;
+  border: 1px solid #e6e6e6;
   border-radius: 6px;
   width: 320px;
   height: 40px;
-  box-shadow: 0 0 10px black;
 }
 
 .add {
@@ -68,9 +80,10 @@ body div {
   width: 392px;
   height: 48px;
   background: #ffffff;
-  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e6e6e6;
+  /* box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.05); */
   border-radius: 8px;
-  box-shadow: 0 0 10px black;
+  /* box-shadow: 0 0 10px black; */
   margin-bottom: 11px;
 }
 
@@ -80,6 +93,10 @@ body div {
 
 .todo_input {
   flex-grow: 1;
+}
+
+.notEditable {
+  pointer-events: none;
 }
 
 .edit {
@@ -99,4 +116,8 @@ body div {
   color: #0e73f6;
   width: max-content;
   margin: 0 auto;
+}
+
+.none {
+  display: none;
 }
