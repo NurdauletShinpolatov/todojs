@@ -162,13 +162,17 @@ const cancelEdit = () => {
 }
 
 const saveEdit = () => {
-    todos = todos.map((item) => {
-        if (item.id == selectedTask) {
-            const editedValue = document.getElementById(`${selectedTask}`);
-            item.value = editedValue.value;
-        }
-        return item;
-    })
+    const editedValue = document.getElementById(`${selectedTask}`);
+    if (editedValue.value == "") {
+        alert("It shouldn't be empty");
+    } else {
+        todos = todos.map((item) => {
+            if (item.id == selectedTask) {
+                item.value = editedValue.value;
+            }
+            return item;
+        })
+    }
     selectedTask = "";
     render();
 }
