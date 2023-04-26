@@ -9,10 +9,10 @@ const filterTodos = document.querySelector(".filterTodos");
 let todos = JSON.parse(localStorage.getItem("todos")) || [
     { value: "Welcome to Taks management app", id: "a213423334", isDone: false },
     { value: "Your data is stored on local storage", id: "a234234", isDone: false },
-    { value: "You can add tasks", id: "a2342d34", isDone: false },
-    { value: "You can delete them", id: "a2342234", isDone: false },
-    { value: "You can edit any of them", id: "a2g34234", isDone: false },
+    { value: "You can add/delete/read/edit tasks", id: "a2342d34", isDone: false },
     { value: "You can mark task as done", id: "a23h4234", isDone: false },
+    { value: "Press enter to save after you finish editing", id: "a23dh4234", isDone: false },
+    { value: "You can filter (un)completed tasks", id: "a23dh234", isDone: false },
 ];
 
 let selectedFilter = "all";
