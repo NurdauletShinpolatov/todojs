@@ -7,12 +7,12 @@ const filterTodos = document.querySelector(".filterTodos");
 
 
 let todos = JSON.parse(localStorage.getItem("todos")) || [
-    { value: "Welcome to Taks management app", id: "a213423334", isDone: false },
-    { value: "Your data is stored on local storage", id: "a234234", isDone: false },
-    { value: "You can add/delete/read/edit tasks", id: "a2342d34", isDone: false },
-    { value: "You can mark task as done", id: "a23h4234", isDone: false },
-    { value: "Press enter to save after you finish editing", id: "a23dh4234", isDone: false },
-    { value: "You can filter (un)completed tasks", id: "a23dh234", isDone: false },
+    { value: "Malumotlar LOCAL STORAGE da saqlanadi", id: "a1", isDone: false },
+    { value: "DRAG qilib vaziyfalarning tartiblang", id: "a2", isDone: false },
+    { value: "Ozgartirib bolgach ENTER bosing", id: "a3", isDone: false },
+    { value: "CRUD", id: "a4", isDone: false },
+    { value: "BAJARILGAN vaziyfani belgilasa boladi", id: "a5", isDone: false },
+    { value: "barajilgan/bajarilmaganlarni FILTRLANG", id: "a6", isDone: false },
 ];
 
 let selectedFilter = "all";
@@ -29,12 +29,87 @@ const filterByStatus = (todos, selectedFilter) => {
     }
 }
 
+const reorderTodo = () => {
+    const start = document.querySelector(".dragStarted");
+    const end = document.querySelector(".dragDropped");
+    const startId = start.querySelector(".todo_input").id;
+    const endId = end.querySelector(".todo_input").id;
+    if (startId != endId) {        
+        console.log(startId, "\n", endId);
+        let startObject;
+        let startObjIndex;
+        let endObject;
+        for (let index = 0; index < todos.length; index++) {
+            console.log("loop 1");
+            if (todos[index].id == startId) {
+                startObject = {...todos[index]};
+                startObjIndex = index;
+                todos.splice(index, 1);
+                break;
+            }
+        }
+        for (let index = 0; index < todos.length; index++) {
+            console.log("loop 2");
+            if (todos[index].id == endId) {
+                endObject = {...todos[index]};
+                todos.splice(index, 0, startObject);
+                index += 1;
+                break;
+            }
+        }
+        // if (startObjIndex < todos.length) {
+        //     todos.splice(startObjIndex, 0, endObject);
+        // } else if (startObjIndex == todos.length) {
+        //     todos.push(endObject);
+        // }
+    }
+    
+    render();
+}
+
+const dragAndDrop = () => {
+    const tasks = document.querySelectorAll(".todo");
+    
+    const dragStart = function () {
+        this.classList.add("dragStarted");
+    }
+    const dragEnd = function () {
+        this.classList.remove("dragHovered");
+    }
+    const dragOver = function (event) {
+        event.preventDefault();
+    }
+    const dragEnter = function (event) {
+        event.preventDefault();
+        this.classList.add("dragHovered");
+    }
+    const dragLeave = function () {
+        this.classList.remove("dragHovered");
+    }
+    const dragDrop = function () {
+        this.classList.add("dragDropped");
+        this.classList.remove("dragHovered");
+        reorderTodo();
+    }
+
+    tasks.forEach((elem) => {
+        elem.addEventListener("dragstart", dragStart);
+        elem.addEventListener("dragend", dragEnd);
+        elem.addEventListener("dragover", dragOver);
+        elem.addEventListener("dragenter", dragEnter);
+        elem.addEventListener("dragleave", dragLeave);
+        elem.addEventListener("drop", dragDrop);
+        
+    });
+}
+
 const render = () => {
+    console.log("render");
     localStorage.setItem('todos', JSON.stringify(todos));
     list.innerHTML = "";
     filterByStatus(todos, selectedFilter).forEach(element => {
         list.innerHTML += `
-        <li class="todo ${element.isDone ? "completedTask" : ""}">
+        <li draggable="true" class="todo ${element.isDone ? "completedTask" : ""}">
             <input type="checkbox" ${element.isDone ? "checked" : ""} onclick="markAsDone('${element.id}')" />
             <input id="${element.id}" value="${element.value}" class="todo_input ${selectedTask != element.id ? "notEditable" : ""} ${element.isDone ? "completedTask" : ""}" type="text" />
             <div class="save ${selectedTask != element.id ? 'none' : ''}">
@@ -46,12 +121,13 @@ const render = () => {
             <div class="edit ${selectedTask == element.id ? 'none' : ''}">
                 <i onclick="enableEdit('${element.id}')" class="bx bx-sm bxs-pencil"></i>
             </div>
-            <div class="delete">
+            <div class="delete ${selectedTask == element.id ? 'none' : ''}">
                 <i onclick="deleteTodo('${element.id}')" class="bx bx-sm bx-trash"></i>
             </div>
         </li>
         `
     });
+    dragAndDrop();
 }
 render();
 
@@ -126,6 +202,5 @@ clear.addEventListener("click", () => {
 
 filterTodos.addEventListener("change", (event) => {
     selectedFilter = event.target.value;
-    render()
+    render();
 })
-
