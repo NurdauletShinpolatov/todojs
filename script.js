@@ -77,11 +77,11 @@ const dragAndDrop = () => {
         this.classList.remove("dragHovered");
     }
     const dragOver = function (event) {
+        this.classList.add("dragHovered");
         event.preventDefault();
     }
     const dragEnter = function (event) {
         event.preventDefault();
-        this.classList.add("dragHovered");
     }
     const dragLeave = function () {
         this.classList.remove("dragHovered");
