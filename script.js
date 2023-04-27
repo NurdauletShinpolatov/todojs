@@ -37,13 +37,11 @@ const dragReplaceTodo = () => {
     if (startId != endId) {        
         console.log(startId, "\n", endId);
         let startObject;
-        let startObjIndex;
-        let endObject;
+        
         for (let index = 0; index < todos.length; index++) {
             console.log("loop 1");
             if (todos[index].id == startId) {
                 startObject = {...todos[index]};
-                startObjIndex = index;
                 todos.splice(index, 1);
                 break;
             }
@@ -57,11 +55,6 @@ const dragReplaceTodo = () => {
                 break;
             }
         }
-        // if (startObjIndex < todos.length) {
-        //     todos.splice(startObjIndex, 0, endObject);
-        // } else if (startObjIndex == todos.length) {
-        //     todos.push(endObject);
-        // }
     }
     
     render();
