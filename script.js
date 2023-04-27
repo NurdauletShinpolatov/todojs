@@ -5,7 +5,7 @@ const inputAdd = document.querySelector(".input");
 const filterTodos = document.querySelector(".filterTodos");
 
 
-
+// states
 let todos = JSON.parse(localStorage.getItem("todos")) || [
     { value: "Malumotlar LOCAL STORAGE da saqlanadi", id: "a1", isDone: false },
     { value: "DRAG qilib vaziyfalarning tartiblang", id: "a2", isDone: false },
@@ -29,7 +29,7 @@ const filterByStatus = (todos, selectedFilter) => {
     }
 }
 
-const reorderTodo = () => {
+const dragReplaceTodo = () => {
     const start = document.querySelector(".dragStarted");
     const end = document.querySelector(".dragDropped");
     const startId = start.querySelector(".todo_input").id;
@@ -89,7 +89,7 @@ const dragAndDrop = () => {
     const dragDrop = function () {
         this.classList.add("dragDropped");
         this.classList.remove("dragHovered");
-        reorderTodo();
+        dragReplaceTodo();
     }
 
     tasks.forEach((elem) => {
@@ -111,7 +111,7 @@ const render = () => {
         list.innerHTML += `
         <li draggable="true" class="todo ${element.isDone ? "completedTask" : ""}">
             <input type="checkbox" ${element.isDone ? "checked" : ""} onclick="markAsDone('${element.id}')" />
-            <input id="${element.id}" value="${element.value}" class="todo_input ${selectedTask != element.id ? "notEditable" : ""} ${element.isDone ? "completedTask" : ""}" type="text" />
+            <input id="${element.id}" value="${element.value}" class="todo_input ${selectedTask != element.id ? 'notEditable' : ''} ${element.isDone ? 'completedTask' : ''}" type="text" />
             <div class="save ${selectedTask != element.id ? 'none' : ''}">
                 <i onclick="saveEdit()" class='bx bx-sm bxs-save'></i>
             </div>

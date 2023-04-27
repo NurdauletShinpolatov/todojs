@@ -20,10 +20,6 @@ i:hover {
   display: none;
 }
 
-.completedTask {
-  background-color: #7df76f;
-}
-
 .dragHovered {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
@@ -138,4 +134,8 @@ i:hover {
   color: #0e73f6;
   width: max-content;
   margin: 0 auto;
+}
+
+.completedTask {
+  background-color: #7df76f;
 }
