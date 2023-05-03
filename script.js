@@ -100,7 +100,6 @@ const dragAndDrop = () => {
 }
 
 const render = () => {
-    console.log("render");
     localStorage.setItem('todos', JSON.stringify(todos));
     list.innerHTML = "";
     filterByStatus(todos, selectedFilter).forEach(element => {
