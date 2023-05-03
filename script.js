@@ -1,9 +1,15 @@
-const form = document.querySelector(".form");
+
+/* 
+    What should we do:
+    1. Sweet alert
+    2. 
+*/
+
+
 const list = document.querySelector(".todosList");
-const clear = document.querySelector(".clear");
 const inputAdd = document.querySelector(".input");
 const filterTodos = document.querySelector(".filterTodos");
-
+const block = document.querySelector(".block");
 
 // states
 let todos = JSON.parse(localStorage.getItem("todos")) || [
@@ -14,9 +20,10 @@ let todos = JSON.parse(localStorage.getItem("todos")) || [
     { value: "BAJARILGAN vaziyfani belgilasa boladi", id: "a5", isDone: false },
     { value: "barajilgan/bajarilmaganlarni FILTRLANG", id: "a6", isDone: false },
 ];
-
 let selectedFilter = "all";
 let selectedTask = "";
+
+
 
 const filterByStatus = (todos, selectedFilter) => {
     switch (selectedFilter) {
@@ -32,14 +39,11 @@ const filterByStatus = (todos, selectedFilter) => {
 const dragReplaceTodo = () => {
     const start = document.querySelector(".dragStarted");
     const end = document.querySelector(".dragDropped");
-    const startId = start.querySelector(".todo_input").id;
-    const endId = end.querySelector(".todo_input").id;
-    if (startId != endId) {        
-        console.log(startId, "\n", endId);
+    const startId = start.id;
+    const endId = end.id;
+    if (startId != endId) {
         let startObject;
-        
         for (let index = 0; index < todos.length; index++) {
-            console.log("loop 1");
             if (todos[index].id == startId) {
                 startObject = {...todos[index]};
                 todos.splice(index, 1);
@@ -47,7 +51,6 @@ const dragReplaceTodo = () => {
             }
         }
         for (let index = 0; index < todos.length; index++) {
-            console.log("loop 2");
             if (todos[index].id == endId) {
                 endObject = {...todos[index]};
                 todos.splice(index, 0, startObject);
@@ -57,7 +60,7 @@ const dragReplaceTodo = () => {
         }
     }
     
-    render();
+    render(123);
 }
 
 const dragAndDrop = () => {
@@ -93,7 +96,6 @@ const dragAndDrop = () => {
         elem.addEventListener("dragenter", dragEnter);
         elem.addEventListener("dragleave", dragLeave);
         elem.addEventListener("drop", dragDrop);
-        
     });
 }
 
@@ -103,20 +105,20 @@ const render = () => {
     list.innerHTML = "";
     filterByStatus(todos, selectedFilter).forEach(element => {
         list.innerHTML += `
-        <li draggable="true" class="todo ${element.isDone ? "completedTask" : ""}">
-            <input type="checkbox" ${element.isDone ? "checked" : ""} onclick="markAsDone('${element.id}')" />
-            <input id="${element.id}" value="${element.value}" class="todo_input ${selectedTask != element.id ? 'notEditable' : ''} ${element.isDone ? 'completedTask' : ''}" type="text" />
+        <li draggable="true" id="${element.id}" class="todo ${element.isDone ? "completedTask" : ""}">
+            <input type="checkbox" ${element.isDone ? "checked" : ""} />
+            <input value="${element.value}" class="todo_input ${selectedTask != element.id ? 'notEditable' : ''} ${element.isDone ? 'completedTask' : ''}" type="text" />
             <div class="save ${selectedTask != element.id ? 'none' : ''}">
-                <i onclick="saveEdit()" class='bx bx-sm bxs-save'></i>
+                <i class='bx bx-sm bxs-save'></i>
             </div>
-            <div class="cansel ${selectedTask != element.id ? 'none' : ''} ">
-                <i onclick="cancelEdit()" class='bx bx-sm bx-x'></i>
+            <div class="cancel ${selectedTask != element.id ? 'none' : ''} ">
+                <i class='bx bx-sm bx-x'></i>
             </div>
             <div class="edit ${selectedTask == element.id ? 'none' : ''}">
-                <i onclick="enableEdit('${element.id}')" class="bx bx-sm bxs-pencil"></i>
+                <i class="bx bx-sm bxs-pencil"></i>
             </div>
             <div class="delete ${selectedTask == element.id ? 'none' : ''}">
-                <i onclick="deleteTodo('${element.id}')" class="bx bx-sm bx-trash"></i>
+                <i class="bx bx-sm bx-trash"></i>
             </div>
         </li>
         `
@@ -125,29 +127,45 @@ const render = () => {
 }
 render();
 
-const deleteTodo = (id) => {
-    todos = todos.filter((item) => item.id !== id);
-    selectedTask = "";
+const markAsDone = (id) => {
+    todos = todos.map((item) => (item.id == id ? {...item, isDone: !item.isDone} : item));
     render();
 }
 
-const clearTodos = () => {
+const addNewTask = () => {
+    if (inputAdd.value == "") {
+        alert("Input field should not be empty!");
+    } else {
+        const newTodo = { value: inputAdd.value, id: "a" + Date.now(), isDone: false, edit: false };
+        todos.unshift(newTodo);
+        inputAdd.value = "";
+        render();
+    }
+}
+
+const clearAllTasks = () => {
     todos = [];
     selectedTask = "";
     render();
 }
 
-const enableEdit = (id) => {
+const deleteTask = (id) => {
+    todos = todos.filter((item) => item.id !== id);
+    selectedTask = "";
+    render();
+}
+
+const enableEditTask = (id) => {
     selectedTask = id;
     render();
-    const elem = document.querySelector(`${"#"+id}`);
-    elem.addEventListener('keydown', (e) => {
+    const todoInput = document.querySelector(`#${selectedTask} .todo_input`);
+    todoInput.addEventListener('keydown', (e) => {
         if (e.keyCode === 13) {
-            saveEdit();
+            saveEditedTask();
         }
     });
-    elem.setSelectionRange(elem.value.length, elem.value.length);
-    elem.focus();
+    todoInput.setSelectionRange(todoInput.value.length, todoInput.value.length);
+    todoInput.focus();
 }
 
 const cancelEdit = () => {
@@ -155,50 +173,34 @@ const cancelEdit = () => {
     render();
 }
 
-const saveEdit = () => {
-    const editedValue = document.getElementById(`${selectedTask}`);
-    if (editedValue.value == "") {
+const saveEditedTask = () => {
+    const editedTask = document.querySelector(`#${selectedTask} .todo_input`);
+    if (editedTask.value == "") {
         alert("It shouldn't be empty");
     } else {
-        todos = todos.map((item) => {
-            if (item.id == selectedTask) {
-                item.value = editedValue.value;
-            }
-            return item;
-        })
+        todos = todos.map((item) => (item.id == selectedTask ? {...item, value: editedTask.value} : item))
     }
     selectedTask = "";
     render();
 }
 
-const markAsDone = (id) => {
-    todos = todos.map((item) => (item.id == id ? {...item, isDone: !item.isDone} : item));
+const changeFilter = (e) => {
+    selectedFilter = e.target.value;
     render();
 }
 
-const inputHasNull = () => {
-    alert("Input field should not be empty!")
+const handleClick = (e) => {
+    e.preventDefault();
+    const btn = e.target;
+    const id = btn.closest(".todo").id;
+    if (btn.closest(".add")) { addNewTask(); }
+    else if (btn.closest(".clear")) { clearAllTasks(); }
+    else if (btn.closest(".delete")) { deleteTask(id); }
+    else if (btn.closest(".edit")) { enableEditTask(id); }
+    else if (btn.closest(".cancel")) { cancelEdit(); }
+    else if (btn.closest(".save")) { saveEditedTask(); }
+    else if (btn.closest(".delete")) { deleteTask(); }
 }
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (event.target["todo"].value == "") {
-        inputHasNull();
-    } else {
-        const inputValue = event.target["todo"].value;
-        const newTodo = { value: inputValue, id: "a" + Date.now(), isDone: false, edit: false };
-        todos.unshift(newTodo);
-        inputAdd.value = "";
-        render();
-    }
-});
-
-clear.addEventListener("click", () => {
-    clearTodos();
-})
-
-
-filterTodos.addEventListener("change", (event) => {
-    selectedFilter = event.target.value;
-    render();
-})
+filterTodos.addEventListener("change", changeFilter)
+block.addEventListener("click", handleClick)
