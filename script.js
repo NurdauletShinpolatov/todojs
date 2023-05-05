@@ -191,7 +191,7 @@ const changeFilter = (e) => {
 const handleClick = (e) => {
     e.preventDefault();
     const btn = e.target;
-    const id = btn.closest(".todo").id;
+    const id = btn.closest(".todo")?.id;
     if (btn.closest(".add")) { addNewTask(); }
     else if (btn.closest(".clear")) { clearAllTasks(); }
     else if (btn.closest(".delete")) { deleteTask(id); }
