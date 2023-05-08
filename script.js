@@ -105,7 +105,7 @@ const render = () => {
     filterByStatus(todos, selectedFilter).forEach(element => {
         list.innerHTML += `
         <li draggable="true" id="${element.id}" class="todo ${element.isDone ? "completedTask" : ""}">
-            <input type="checkbox" ${element.isDone ? "checked" : ""} />
+            <input class="toggleCheck" type="checkbox" ${element.isDone ? "checked" : ""} />
             <input value="${element.value}" class="todo_input ${selectedTask != element.id ? 'notEditable' : ''} ${element.isDone ? 'completedTask' : ''}" type="text" />
             <div class="save ${selectedTask != element.id ? 'none' : ''}">
                 <i class='bx bx-sm bxs-save'></i>
@@ -126,10 +126,12 @@ const render = () => {
 }
 render();
 
-const markAsDone = (id) => {
-    todos = todos.map((item) => (item.id == id ? {...item, isDone: !item.isDone} : item));
-    render();
-}
+const toggleCheck = (id) => {
+  tasks = tasks.map((item) =>
+    item.id == id ? { ...item, isDone: !item.isDone } : item
+  );
+  render();
+};
 
 const addNewTask = () => {
     if (inputAdd.value == "") {
@@ -199,6 +201,7 @@ const handleClick = (e) => {
     else if (btn.closest(".cancel")) { cancelEdit(); }
     else if (btn.closest(".save")) { saveEditedTask(); }
     else if (btn.closest(".delete")) { deleteTask(); }
+    else if (btn.closest(".toggleCheck")) { toggleCheck(); }
 }
 
 filterTodos.addEventListener("change", changeFilter)
