@@ -127,7 +127,7 @@ const render = () => {
 render();
 
 const toggleCheck = (id) => {
-  tasks = tasks.map((item) =>
+  tasks = todos.map((item) =>
     item.id == id ? { ...item, isDone: !item.isDone } : item
   );
   render();
