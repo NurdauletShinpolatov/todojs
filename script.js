@@ -127,7 +127,7 @@ const render = () => {
 render();
 
 const toggleCheck = (id) => {
-  todos = todos.map((item) =>
+    todos = todos.map((item) =>
     item.id == id ? { ...item, isDone: !item.isDone } : item
   );
   render();
@@ -201,7 +201,7 @@ const handleClick = (e) => {
     else if (btn.closest(".cancel")) { cancelEdit(); }
     else if (btn.closest(".save")) { saveEditedTask(); }
     else if (btn.closest(".delete")) { deleteTask(); }
-    else if (btn.closest(".toggleCheck")) { toggleCheck(); }
+    else if (btn.closest(".toggleCheck")) { toggleCheck(id); }
 }
 
 filterTodos.addEventListener("change", changeFilter)
