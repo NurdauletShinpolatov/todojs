@@ -35,7 +35,26 @@
                     </select>
                 </div>
                 <ul class="todosList">
-                    
+                    <li draggable="true" class="todo completedTask">
+                        <input class="toggleCheck" type="checkbox" checked />
+                        <input value="Something" class="todo_input notEditable completedTask" type="text" />
+                        <div class="edit">
+                            <i class="bx bx-sm bxs-pencil"></i>
+                        </div>
+                        <div class="delete">
+                            <i class="bx bx-sm bx-trash"></i>
+                        </div>
+                    </li>
+                    <li draggable="true" class="todo">
+                        <input class="toggleCheck" type="checkbox" />
+                        <input value="Something" class="todo_input notEditable" type="text" />
+                        <div class="edit">
+                            <i class="bx bx-sm bxs-pencil"></i>
+                        </div>
+                        <div class="delete">
+                            <i class="bx bx-sm bx-trash"></i>
+                        </div>
+                    </li>
                 </ul>
                 <div class="clear">Clear all</div>
             </div>
