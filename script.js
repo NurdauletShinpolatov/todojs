@@ -1,11 +1,3 @@
-
-/* 
-    What should we do:
-    1. Sweet alert
-    2. 
-*/
-
-
 const list = document.querySelector(".todosList");
 const inputAdd = document.querySelector(".input");
 const filterTodos = document.querySelector(".filterTodos");
@@ -60,7 +52,7 @@ const dragReplaceTodo = () => {
         }
     }
     
-    render(123);
+    render();
 }
 
 const dragAndDrop = () => {
@@ -161,7 +153,7 @@ const enableEditTask = (id) => {
     render();
     const todoInput = document.querySelector(`#${selectedTask} .todo_input`);
     todoInput.addEventListener('keydown', (e) => {
-        if (e.keyCode === 13) {
+        if (e.keyCode === 13) { // if enter key is pressed
             saveEditedTask();
         }
     });
